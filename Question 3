@@ -1,0 +1,23 @@
+import cv2 as cv
+import matplotlib.pyplot as plt
+import numpy as np
+img_orig=cv.imread('D:\semester 5\Image Processing and Machine Vision\Assignment 1\highlights_and_shadows.jpg',cv.IMREAD_COLOR)
+gamma=0.7
+table=np.array([(i/255.0)**gamma*255.0 for i in np.arange(0,256)]).astype('uint8')
+img_gamma=cv.LUT(img_orig,table)
+img_orig=cv.cvtColor(img_orig,cv.COLOR_BGR2RGB)
+img_gamma=cv.cvtColor(img_gamma,cv.COLOR_BGR2RGB)
+
+
+# axarr[0, 0].imshow(img_orig, extent=[0, width*2, 0, height*2])
+# axarr[0, 1].imshow(img_gamma, extent=[0, width*2, 0, height*2])
+g,axa=plt.subplots(1,2)
+axa[0].imshow(img_orig)
+axa[1].imshow(img_gamma)
+color=('b','g','r')
+f,axarr=plt.subplots(3,2)
+for i,c in enumerate(color):
+    hist_orig=cv.calcHist([img_orig],[i],None,[256],[0,256])
+    axarr[i,0].plot(hist_orig,color=c)
+    hist_gamma=cv.calcHist([img_gamma],[i],None,[256],[0,256])
+    axarr[i,1].plot(hist_gamma,color=c)
