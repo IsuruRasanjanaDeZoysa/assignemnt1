@@ -1,0 +1,48 @@
+import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
+img=cv.imread('D:\semester 5\Image Processing and Machine Vision\Assignment 1\shells2.jpg',cv.IMREAD_GRAYSCALE)
+
+def histogram_equalizer(img):
+    hist,bins=np.histogram(img.ravel(),256,[0,256])
+    cumsum=hist.cumsum()
+    cumsum = cumsum * (len(bins)-2) / cumsum.max() 
+    transform=np.round(cumsum).astype('uint8')
+    img_hisequalized=cv.LUT(img,transform)
+    return img_hisequalized
+
+
+
+img_hisequalized=histogram_equalizer(img)
+
+fig, axarr = plt.subplots(1, 2,figsize=(10,5))
+axarr[0].imshow(img,cmap='gray')
+axarr[0].set_title("Original Image")
+axarr[0].axis('off')
+axarr[1].imshow(img_hisequalized,cmap='gray')
+axarr[1].set_title("Modified Image")
+axarr[1].axis('off')
+plt.show()
+
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4))
+
+ 
+hist_orig, bins_orig = np.histogram(img.flatten(), 256, [0, 256])
+ax1.plot(hist_orig, color='b')
+ax1.set_title('Histogram of Original Image')
+ax1.set_xlim([0, 256])
+ax1.set_xlabel('Pixel Value')
+ax1.set_ylabel('Frequency')
+
+
+hist_equalized, bins_equalized = np.histogram(img_hisequalized.flatten(), 256, [0, 256])
+ax2.plot(hist_equalized, color='r')
+ax2.set_title('Histogram of Histogram Equalized Image')
+ax2.set_xlim([0, 256])
+ax2.set_xlabel('Pixel Value')
+ax2.set_ylabel('Frequency')
+
+plt.tight_layout()
+plt.show()
+
