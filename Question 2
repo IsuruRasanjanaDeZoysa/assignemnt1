@@ -1,0 +1,27 @@
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+
+t1 = np.linspace(0, 0, 109).astype('uint8')
+t2 = np.linspace(109, 200, 200-109+1).astype('uint8')
+t3 = np.linspace(0, 0, 255-200).astype('uint8')
+transform=np.concatenate((t1,t2),axis=0).astype('uint8');
+transform1=np.concatenate((transform,t3),axis=0).astype('uint8');
+
+t1 = np.linspace(0, 0, 201).astype('uint8')
+t2 = np.linspace(201, 255, 255-201+1).astype('uint8')
+transform2=np.concatenate((t1,t2),axis=0).astype('uint8');
+
+
+img_orig=cv.imread('D:\semester 5\Image Processing and Machine Vision\Assignment 1\BrainProtonDensitySlice9.png',cv.IMREAD_COLOR)
+
+cv.namedWindow("Image",cv.WINDOW_AUTOSIZE)
+cv.imshow("Image",img_orig)
+cv.waitKey(0)
+image_transformed_gray_matter=cv.LUT(img_orig,transform1)
+cv.imshow("Gray matter",image_transformed_gray_matter)
+cv.waitKey(0)
+image_transformed_white_matter=cv.LUT(img_orig,transform2)
+cv.imshow("White matter",image_transformed_white_matter)
+cv.waitKey(0)
+cv.destroyAllWindows()
