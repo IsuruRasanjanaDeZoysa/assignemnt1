@@ -1,0 +1,28 @@
+import cv2 as cv
+import numpy as np
+import matplotlib.pyplot as plt
+image_bgr = cv.imread('D:\semester 5\Image Processing and Machine Vision\Assignment 1\spider.png', cv.IMREAD_COLOR)
+image_rgb = cv.cvtColor(image_bgr, cv.COLOR_BGR2RGB)
+image_hsv = cv.cvtColor(image_bgr, cv.COLOR_BGR2HSV)
+hue, saturation, value = cv.split(image_hsv)
+saturation=np.minimum(saturation+0.6*128*np.exp((saturation-128)**2/(2*70**2)*(-1)),255).astype(np.uint8)
+modified_hsv = cv.merge([hue, saturation, value])
+image_modified = cv.cvtColor(modified_hsv, cv.COLOR_HSV2RGB)
+fig, axarr = plt.subplots(1, 2,figsize=(15,10))
+axarr[0].imshow(image_rgb)
+axarr[0].set_title("Original Image")
+axarr[0].axis('off')
+axarr[1].imshow(image_modified)
+axarr[1].set_title("Modified Image")
+axarr[1].axis('off')
+plt.show()
+
+saturation_x=np.arange(256)
+saturation_y=np.minimum(saturation_x+0.6*128*np.exp((saturation_x-128)**2/(2*70**2)*(-1)),255).astype(np.uint8)
+plt.figure(figsize=(8, 6))
+plt.plot(saturation_x, saturation_y, color='blue')
+
+plt.title('Intensity transformation of the saturation plane')
+plt.legend()
+plt.grid()
+plt.show()
